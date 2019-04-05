@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Nav_Feed"
+        android:title="Feed"
+        android:icon="@drawable/newsfeed"
+        />
+
+    <item
+        android:id="@+id/Nav_Friends"
+        android:title="Friends"
+        android:icon="@drawable/friends"
+        />
+
+    <item
+        android:id="@+id/Nav_Messages"
+        android:title="Messages"
+        android:icon="@drawable/messages"
+        />
+
+    <item
+        android:id="@+id/Nav_Events"
+        android:title="Events"
+        android:icon="@drawable/events"
+        />
+
+    <item
+        android:id="@+id/Nav_Notes"
+        android:title="Notes"
+        android:icon="@drawable/notes"
+        />
+
+    <item
+        android:id="@+id/Nav_Todo"
+        android:title="Todo List"
+        android:icon="@drawable/todo"
+        />
+
+    <item
+        android:id="@+id/Nav_Enroll"
+        android:title="Enroll"
+        android:icon="@drawable/enroll"
+        />
+
+    <item
+        android:id="@+id/Nav_FindFriends"
+        android:title="Find Friends"
+        android:icon="@drawable/findfriends"
+        />
+
+    <item
+        android:id="@+id/Nav_Quiz"
+        android:title="Play Quiz"
+        android:icon="@drawable/quiz"
+        />
+
+    <item
+        android:id="@+id/Nav_Settings"
+        android:title="Settings"
+        android:icon="@drawable/settings"
+        />
+
+    <item
+        android:id="@+id/Nav_Feedback"
+        android:title="Feedback"
+        android:icon="@drawable/feedback"
+        />
+
+    <item
+        android:id="@+id/Nav_Logout"
+        android:title="Logout"
+        android:icon="@drawable/logout"
+        />
+
+</menu>
