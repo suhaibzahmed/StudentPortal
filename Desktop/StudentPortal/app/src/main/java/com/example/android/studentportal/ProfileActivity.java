@@ -55,9 +55,9 @@ public class ProfileActivity extends AppCompatActivity {
                 Picasso.with(ProfileActivity.this).load(myProfileImage).placeholder(R.drawable.student1).into(userProfileImage);
 
                 userProfName.setText(myProfileName);
-                userDOB.setText("dob: " +myDOB);
-                userCountry.setText("country: " +myCountry);
-                userGender.setText("gender: " +myGender);
+                userDOB.setText("Dob: " +myDOB);
+                userCountry.setText("Country: " +myCountry);
+                userGender.setText("Gender: " +myGender);
                 userStatus.setText(myStatus);
             }
             }

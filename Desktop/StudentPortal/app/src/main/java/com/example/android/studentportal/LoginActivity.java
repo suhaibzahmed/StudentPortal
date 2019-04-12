@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText userEmail,userPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
+    private TextView ForgotPasswordLink;
 
     Context context = LoginActivity.this;
     CharSequence text;
@@ -41,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         userEmail = (EditText) findViewById(R.id.Login_email);
         userPassword = (EditText) findViewById(R.id.Login_password);
         loginButton = (Button) findViewById(R.id.Login);
+        ForgotPasswordLink = (TextView) findViewById(R.id.forget_password_link);
 
         needNewAccountLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +55,14 @@ public class LoginActivity extends AppCompatActivity {
                 Intent RegisterIntent = new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(RegisterIntent);
                 finish();
+            }
+        });
+
+        ForgotPasswordLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+              startActivity(new Intent(LoginActivity.this,ResetPasswordActivity.class));
             }
         });
 

@@ -81,6 +81,10 @@ public class RegisterActivity extends AppCompatActivity {
        else if(TextUtils.isEmpty(confirmPassword)){
             Toast.makeText(context,text = "Please Confirm Your Password",Toast.LENGTH_SHORT).show();
         }
+        else if(!password.equals(confirmPassword))
+        {
+            Toast.makeText(this, "your password does not match with your confirm password...", Toast.LENGTH_SHORT).show();
+        }
         else{
             loadingBar.setTitle("Creating Account");
             loadingBar.setMessage("Please wait, Your account is being created");

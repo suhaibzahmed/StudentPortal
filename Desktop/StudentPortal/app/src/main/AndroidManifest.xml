@@ -40,7 +40,14 @@
         <activity
             android:name=".FindFriendsActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".CommentsActivity"></activity>
+        <activity android:name=".CommentsActivity" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".PersonProfileActivity" />
+        <activity android:name=".FriendsActivity" />
+        <activity android:name=".ChatActivity"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>

@@ -24,6 +24,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -172,12 +173,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void DisplayAllUsersPosts()
     {
+
+        Query SortPostsInDecendingOrder = PostsRef.orderByChild("counter");
+
         FirebaseRecyclerAdapter<Posts, PostsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, PostsViewHolder>
                 (
                         Posts.class,
                         R.layout.all_posts_layout,
                         PostsViewHolder.class,
-                        PostsRef
+                        SortPostsInDecendingOrder
                 )
         {
 
@@ -406,6 +410,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.Nav_Friends:
+                sendUserToFriendsActivity();
                 Toast.makeText(context,text="Friends", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -455,6 +460,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+    }
+
+    private void sendUserToFriendsActivity() {
+        Intent FriendsIntent = new Intent(MainActivity.this,FriendsActivity.class);
+        startActivity(FriendsIntent);
     }
 
     private void sendUserToFindFriendsActivity() {
