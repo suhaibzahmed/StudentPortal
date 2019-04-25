@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -28,7 +29,7 @@ public class PersonProfileActivity extends AppCompatActivity {
     private CircleImageView userProfileImage;
     private Button SendFriendReqButton, DeclineFriendRequestButton;
 
-    private DatabaseReference FriendRequestRef, UsersRef, FriendsRef;
+    private DatabaseReference FriendRequestRef, UsersRef, FriendsRef, NotificationRef;
     private FirebaseAuth mAuth;
 
     private String senderUserId, receiverUserId, CURRENT_STATE, saveCurrentDate;
@@ -46,6 +47,7 @@ public class PersonProfileActivity extends AppCompatActivity {
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         FriendRequestRef = FirebaseDatabase.getInstance().getReference().child("FriendRequests");
         FriendsRef = FirebaseDatabase.getInstance().getReference().child("Friends");
+        NotificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
         InitializeFields();
 
@@ -324,12 +326,29 @@ public class PersonProfileActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful())
                                     {
-                                        SendFriendReqButton.setEnabled(true);
-                                        CURRENT_STATE = "request_sent";
-                                        SendFriendReqButton.setText("Cancel Friend Request");
+                                        HashMap<String, String> requestNotificationMap = new HashMap<>();
+                                        requestNotificationMap.put("from", senderUserId);
+                                        requestNotificationMap.put("type", "request");
 
-                                        DeclineFriendRequestButton.setVisibility(View.INVISIBLE);
-                                        DeclineFriendRequestButton.setEnabled(false);
+                                        NotificationRef.child(receiverUserId).push()
+                                                .setValue(requestNotificationMap)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful())
+                                                        {
+                                                            SendFriendReqButton.setEnabled(true);
+                                                            CURRENT_STATE = "request_sent";
+                                                            SendFriendReqButton.setText("Cancel Friend Request");
+
+                                                            DeclineFriendRequestButton.setVisibility(View.INVISIBLE);
+                                                            DeclineFriendRequestButton.setEnabled(false);
+                                                        }
+                                                    }
+                                                });
+
+
+
                                     }
                                 }
                             });

@@ -20,6 +20,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,7 +52,7 @@ public class EventsActivity extends AppCompatActivity {
 
 
 
-        mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.event_page_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Events");
@@ -84,35 +85,39 @@ public class EventsActivity extends AppCompatActivity {
 
     private void DisplayAllUsersEvents()
     {
+        Query SortPostsInDecendingOrder = EventsRef.orderByChild("counter");
+
         FirebaseRecyclerAdapter<Events, EventsActivity.EventsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Events, EventsActivity.EventsViewHolder>
                 (
                         Events.class,
                         R.layout.all_events_list,
                         EventsActivity.EventsViewHolder.class,
-                        EventsRef
+                        SortPostsInDecendingOrder
                 )
         {
 
             @Override
             protected void populateViewHolder(EventsActivity.EventsViewHolder viewHolder, Events model, int position) {
 
-                final String PostKey = getRef(position).getKey();
+                final String EventKey = getRef(position).getKey();
 
                 viewHolder.setFullname(model.getFullname());
                 viewHolder.setTime(model.getTime());
                 viewHolder.setDate(model.getDate());
                 viewHolder.setDescription(model.getDescription());
+                viewHolder.setStartdate(model.getStartdate());
+                viewHolder.setEnddate(model.getEnddate());
                 viewHolder.setProfileimage(getApplicationContext(), model.getProfileimage());
                 viewHolder.setEventimage(getApplicationContext(),model.getEventimage());
 
-               /* viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                viewHolder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent ClickPostIntent = new Intent(EventsActivity.this,ClickPostActivity.class);
-                        ClickPostIntent.putExtra("PostKey",PostKey);
-                        startActivity(ClickPostIntent);
+                        Intent ClickEventIntent = new Intent(EventsActivity.this,ClickEventActivity.class);
+                        ClickEventIntent.putExtra("EventKey",EventKey);
+                        startActivity(ClickEventIntent);
                     }
-                });*/
+                });
 
             }
         };
@@ -157,6 +162,15 @@ public class EventsActivity extends AppCompatActivity {
         public void setEventimage(Context ctx1,String eventimage){
             ImageView EventImage = (ImageView) mView.findViewById(R.id.event_image);
             Picasso.with(ctx1).load(eventimage).into(EventImage);
+        }
+
+        public void setEnddate(String enddate){
+            TextView endDate = (TextView) mView.findViewById(R.id.event_endOn);
+            endDate.setText("Event Ends On "+enddate);
+        }
+        public void setStartdate(String startdate){
+            TextView startDate = (TextView) mView.findViewById(R.id.event_startOn);
+            startDate.setText("Event Starts On "+startdate);
         }
 
 

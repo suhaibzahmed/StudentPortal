@@ -10,12 +10,12 @@
 
     <include
         layout="@layout/app_bar_layout"
-        android:id="@+id/main_page_toolbar"></include>
+        android:id="@+id/event_page_toolbar"></include>
     <FrameLayout
-        android:id="@+id/main_container1"
+        android:id="@+id/event_container1"
         android:layout_width="match_parent"
         android:layout_height="511dp"
-        android:layout_below="@+id/main_page_toolbar"
+        android:layout_below="@+id/event_page_toolbar"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
@@ -34,13 +34,13 @@
         android:id="@+id/add_new_event_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_above="@+id/main_container"
+        android:layout_above="@+id/event_container1"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/eeeee"
+        android:src="@drawable/eveveve"
         android:scaleType="centerCrop"
         android:layout_marginBottom="4dp"
         android:layout_marginRight="12dp"
-        android:background="@color/colorPrimaryDark1"
+        android:background="@color/colorblack"
         android:baselineAlignBottom="false"
         android:focusableInTouchMode="false"
         android:layout_alignParentRight="true"

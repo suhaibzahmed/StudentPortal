@@ -95,8 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        sendUserToSetupActivity();
-                        Toast.makeText(context,text = "Account Created Successfully",Toast.LENGTH_SHORT).show();
+                        SendEmailVerificationMessage();
                         loadingBar.dismiss();
                     }
                     else{
@@ -109,10 +108,37 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void sendUserToSetupActivity() {
-        Intent setupIntent = new Intent(RegisterActivity.this,SetupActivity.class);
-        setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(setupIntent);
+    private void SendEmailVerificationMessage()
+    {
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user!=null)
+        {
+            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                     if (task.isSuccessful())
+                     {
+                         Toast.makeText(RegisterActivity.this,"Verify Your Account",Toast.LENGTH_LONG).show();
+                         sendUserToLoginActivity();
+                         mAuth.signOut();
+
+                     }
+                     else
+                     {
+                         String Error = task.getException().getMessage();
+                         Toast.makeText(RegisterActivity.this,"Error: "+Error,Toast.LENGTH_LONG).show();
+                         mAuth.signOut();
+                     }
+                }
+            });
+        }
+    }
+
+    private void sendUserToLoginActivity() {
+        Intent loginIntent = new Intent(RegisterActivity.this,LoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
         finish();
     }
 }

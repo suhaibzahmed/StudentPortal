@@ -18,14 +18,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button loginButton,needNewAccountLink;
     private EditText userEmail,userPassword;
     private FirebaseAuth mAuth;
+    private Boolean emailAddressChecker;
+
     private ProgressDialog loadingBar;
     private TextView ForgotPasswordLink;
+
+    private DatabaseReference UsersRef;
 
     Context context = LoginActivity.this;
     CharSequence text;
@@ -37,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
         loadingBar = new ProgressDialog(this);
 
         needNewAccountLink = (Button) findViewById(R.id.Register);
@@ -104,8 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        sendUserToMainActivity();
-                        Toast.makeText(context,text = "Login Successfull",Toast.LENGTH_SHORT).show();
+                        VerifyEmailAddress();
                         loadingBar.dismiss();
                     }
                     else{
@@ -117,6 +124,39 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
+
+    private void VerifyEmailAddress(){
+        FirebaseUser user = mAuth.getCurrentUser();
+        emailAddressChecker = user.isEmailVerified();
+
+        if (emailAddressChecker)
+        {
+            String currentUserId = mAuth.getCurrentUser().getUid();
+            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+            UsersRef.child(currentUserId).child("device_token")
+                    .setValue(deviceToken)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                            {
+                                sendUserToMainActivity();
+                                Toast.makeText(context,text = "Login Successfull",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+        }
+        else
+        {
+            Toast.makeText(this,"Verify Your Account",Toast.LENGTH_LONG).show();
+            mAuth.signOut();
+        }
+    }
+
 
     private void sendUserToMainActivity() {
         Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);

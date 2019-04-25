@@ -30,7 +30,11 @@
         android:title="Notes"
         android:icon="@drawable/notes"
         />
-
+    <item
+        android:id="@+id/Nav_Quiz"
+        android:title="Quiz"
+        android:icon="@drawable/quiz"
+    />
     <item
         android:id="@+id/Nav_Todo"
         android:title="Todo List"
@@ -38,8 +42,8 @@
         />
 
     <item
-        android:id="@+id/Nav_Enroll"
-        android:title="Enroll"
+        android:id="@+id/Nav_Request"
+        android:title="Requests"
         android:icon="@drawable/enroll"
         />
 
@@ -49,11 +53,7 @@
         android:icon="@drawable/findfriends"
         />
 
-    <item
-        android:id="@+id/Nav_Quiz"
-        android:title="Play Quiz"
-        android:icon="@drawable/quiz"
-        />
+
 
     <item
         android:id="@+id/Nav_Settings"

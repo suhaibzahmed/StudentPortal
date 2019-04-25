@@ -46,8 +46,33 @@
             android:parentActivityName=".MainActivity" />
         <activity android:name=".PersonProfileActivity" />
         <activity android:name=".FriendsActivity" />
-        <activity android:name=".ChatActivity"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".NotesActivity" />
+        <activity
+            android:name=".ChatActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MyPostsActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".FriendRequestActivity" />
+        <activity android:name=".MessagesActivity" />
+        <activity android:name=".AllNotesActivity" />
+        <activity android:name=".ClickEventActivity" />
+        <activity
+            android:name=".QuizActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".AptitudeQuizActivity" />
+        <activity
+            android:name=".AptitudeResultActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".VerbalQuizActivity" />
+        <activity
+            android:name=".VerbalResultActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".TodoListActivity" />
+        <activity android:name=".NewTaskClass" />
+        <activity android:name=".NewTaskAct" />
+        <activity android:name=".EditTaskDesk"></activity>
     </application>
 
 </manifest>

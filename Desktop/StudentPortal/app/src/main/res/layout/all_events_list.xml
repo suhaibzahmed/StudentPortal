@@ -95,6 +95,8 @@
             android:padding="3dp"
             android:textSize="16sp"/>
 
+
+
         <ImageView
             android:id="@+id/event_image"
             android:layout_width="match_parent"
@@ -103,6 +105,28 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/eventsss" />
+
+        <TextView
+            android:id="@+id/event_startOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Starts On"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:padding="3dp"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/event_endOn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ends On"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:padding="3dp"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

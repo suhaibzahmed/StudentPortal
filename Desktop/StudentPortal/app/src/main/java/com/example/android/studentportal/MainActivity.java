@@ -27,6 +27,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
@@ -170,6 +176,27 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    public void updateUserStatus(String state)
+    {
+        String saveCurrentDate, saveCurrentTime;
+
+        Calendar calForDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calForDate.getTime());
+
+        Calendar calForTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calForTime.getTime());
+
+        Map currentStateMap = new HashMap();
+        currentStateMap.put("time",saveCurrentTime);
+        currentStateMap.put("date",saveCurrentDate);
+        currentStateMap.put("type",state);
+
+        UsersRef.child(currentUserID).child("userState")
+                .updateChildren(currentStateMap);
+    }
+
 
     private void DisplayAllUsersPosts()
     {
@@ -252,6 +279,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         postlist.setAdapter(firebaseRecyclerAdapter);
+
+        updateUserStatus("online");
     }
 
 
@@ -406,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()){
 
             case R.id.Nav_Feed:
-                SendUserToPostActivity();
+                SendUserToMainActivity();
                 break;
 
             case R.id.Nav_Friends:
@@ -415,11 +444,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.Nav_Messages:
+                sendUserToMessagesActivity();
                 Toast.makeText(context,text="Messages", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.Nav_Notes:
+                sendUserToNotesActivity();
                 Toast.makeText(context,text="Notes", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.Nav_Quiz:
+                sendUserToQuizActivity();
+                Toast.makeText(context,text="Quiz", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.Nav_Todo:
@@ -431,17 +467,14 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(context,text="Find Friends", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.Nav_Quiz:
-                Toast.makeText(context,text="Play Quiz", Toast.LENGTH_SHORT).show();
-                break;
-
             case R.id.Nav_Events:
                 SendUserToEventsActivity();
                 Toast.makeText(context,text="Events", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.Nav_Enroll:
-                Toast.makeText(context,text="Enroll", Toast.LENGTH_SHORT).show();
+            case R.id.Nav_Request:
+                sendUserToFriendRequestsActivity();
+                Toast.makeText(context,text="Added You", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.Nav_Settings:
@@ -450,10 +483,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.Nav_Feedback:
+                sendUserToFeedBackActivity();
                 Toast.makeText(context,text="Feedback", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.Nav_Logout:
+                updateUserStatus("offline");
                 mAuth.signOut();
                 sendUserToLoginActivity();
                 break;
@@ -462,9 +497,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
+    private void SendUserToMainActivity() {
+        Intent mainIntent = new Intent(MainActivity.this,MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
+    }
+
+    private void sendUserToMessagesActivity() {
+        Intent MessagesIntent = new Intent(MainActivity.this,MessagesActivity.class);
+        startActivity(MessagesIntent);
+    }
+
     private void sendUserToFriendsActivity() {
         Intent FriendsIntent = new Intent(MainActivity.this,FriendsActivity.class);
         startActivity(FriendsIntent);
+    }
+
+    private void sendUserToFriendRequestsActivity() {
+        Intent FriendReqIntent = new Intent(MainActivity.this,FriendRequestActivity.class);
+        startActivity(FriendReqIntent);
     }
 
     private void sendUserToFindFriendsActivity() {
@@ -482,4 +536,21 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settingsIntent);
 
     }
+    private void sendUserToNotesActivity() {
+        Intent noteIntent = new Intent(MainActivity.this,AllNotesActivity.class);
+        startActivity(noteIntent);
+
+    }
+    private void sendUserToQuizActivity() {
+        Intent noteIntent = new Intent(MainActivity.this,QuizActivity.class);
+        startActivity(noteIntent);
+
+    }
+
+    private void sendUserToFeedBackActivity(){
+        Intent feedIntent = new Intent(MainActivity.this,FeedbackActivity.class);
+        startActivity(feedIntent);
+    }
+
+
 }

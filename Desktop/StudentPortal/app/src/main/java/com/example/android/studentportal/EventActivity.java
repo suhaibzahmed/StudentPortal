@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,17 +42,19 @@ public class EventActivity extends AppCompatActivity {
     private ImageButton SelectEventImage;
     private Button UpdateEventButton;
     private EditText EventDescription;
+    private static EditText StartdateText,EnddateText;
 
 
     private static final int GalleryPick=1;
     private Uri ImageUri;
-    private String Description;
+    private String Description,StartDate,EndDate;
 
     private StorageReference EventReference;
     private DatabaseReference UsersRef, PostsRef;
     private FirebaseAuth mAuth;
 
     private String saveCurrentDate, saveCurrentTime, eventRandomName, downloadUrl,current_user_id;
+    private long countPosts = 0;
 
 
 
@@ -69,6 +73,8 @@ public class EventActivity extends AppCompatActivity {
         SelectEventImage = (ImageButton) findViewById(R.id.EventImage);
         UpdateEventButton = (Button) findViewById(R.id.User_Event_button);
         EventDescription = (EditText) findViewById(R.id.EventText);
+        StartdateText = (EditText) findViewById(R.id.start_event_date);
+        EnddateText = (EditText) findViewById(R.id.end_event_date);
         loadingBar = new ProgressDialog(this);
 
         mToolbar = (Toolbar)findViewById(R.id.update_Event_page_toolbar);
@@ -95,6 +101,8 @@ public class EventActivity extends AppCompatActivity {
     private void ValidateEventInfo()
     {
         Description = EventDescription.getText().toString();
+        StartDate = StartdateText.getText().toString();
+        EndDate = EnddateText.getText().toString();
 
         if(TextUtils.isEmpty(Description)){
             Toast.makeText(EventActivity.this,"We're Sorry Your Event Description is Empty",Toast.LENGTH_LONG).show();
@@ -102,6 +110,13 @@ public class EventActivity extends AppCompatActivity {
         else if(ImageUri == null){
             Toast.makeText(EventActivity.this,"We're Sorry You havn't Selected The Event Image",Toast.LENGTH_LONG).show();
         }
+        else if (TextUtils.isEmpty(StartDate)){
+            Toast.makeText(EventActivity.this,"Please Enter Events Start Date",Toast.LENGTH_LONG).show();
+        }
+        else if (TextUtils.isEmpty(EndDate)){
+            Toast.makeText(EventActivity.this,"Please Enter Events End Date",Toast.LENGTH_LONG).show();
+        }
+
         else{
             loadingBar.setTitle("Creating Event");
             loadingBar.setMessage("Please wait, Your Event is being created");
@@ -147,6 +162,28 @@ public class EventActivity extends AppCompatActivity {
     }
 
     private void SavingEventInformationToDatabase() {
+
+        PostsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if (dataSnapshot.exists())
+                {
+                    countPosts = dataSnapshot.getChildrenCount();
+                }
+                else
+                {
+                    countPosts = 0;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
         UsersRef.child(current_user_id).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -160,9 +197,12 @@ public class EventActivity extends AppCompatActivity {
                     postsMap.put("date",saveCurrentDate);
                     postsMap.put("time",saveCurrentTime);
                     postsMap.put("description",Description);
+                    postsMap.put("startdate",StartDate);
+                    postsMap.put("enddate",EndDate);
                     postsMap.put("eventimage",downloadUrl);
                     postsMap.put("profileimage",userProfileImage);
                     postsMap.put("fullname", userFullName);
+                    postsMap.put("counter", countPosts);
                     PostsRef.child(current_user_id + eventRandomName).updateChildren(postsMap)
                             .addOnCompleteListener(new OnCompleteListener() {
                                 @Override
@@ -227,4 +267,27 @@ public class EventActivity extends AppCompatActivity {
         finish();
     }
 
+    public void btn_PickerDate(View view) {
+
+        DialogFragment fragment = new MyDateFragment();
+        fragment.show(getSupportFragmentManager(),"date picker");
+    }
+
+    public void btn_PickerDate1(View view) {
+
+        DialogFragment fragment1 = new MyDateFragment1();
+        fragment1.show(getSupportFragmentManager(),"date picker1");
+    }
+
+    public static void populateSetDateText(int year, int month, int day){
+
+        StartdateText.setText(month+"/"+day+"/"+year);
+
+    }
+
+    public static void populateSetDateText1(int year, int month, int day){
+
+        EnddateText.setText(month+"/"+day+"/"+year);
+
+    }
 }

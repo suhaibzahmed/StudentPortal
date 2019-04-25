@@ -1,7 +1,7 @@
 package com.example.android.studentportal;
 
 public class Events {
-    public String uid, time, date, eventimage, description, profileimage, fullname;
+    public String uid, time, date, eventimage, description, profileimage, fullname, startdate, enddate;
 
     public Events(){
 
@@ -14,6 +14,8 @@ public class Events {
         this.description = description;
         this.profileimage = profileimage;
         this.fullname = fullname;
+        this.startdate = startdate;
+        this.enddate = enddate;
     }
     public String getUid() {
         return uid;
@@ -69,6 +71,22 @@ public class Events {
 
     public void setFullname(String fullname) {
         this.fullname = fullname;
+    }
+
+    public String getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(String startdate) {
+        this.startdate = startdate;
+    }
+
+    public String getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(String enddate) {
+        this.enddate = enddate;
     }
 }
 
